@@ -21,8 +21,8 @@
     },
     "autoload": {
         "files": [
-            "Telegram.php",
-            "TelegramErrorLogger.php"
+            "telegram.php",
+            "telegram_error_logger.php"
         ]
     }
 }

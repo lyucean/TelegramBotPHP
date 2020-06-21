@@ -1,7 +1,7 @@
 <?php
 
-if (file_exists('TelegramErrorLogger.php')) {
-    require_once 'TelegramErrorLogger.php';
+if (file_exists('telegram_error_logger.php')) {
+    require_once 'telegram_error_logger.php';
 }
 
 /**
