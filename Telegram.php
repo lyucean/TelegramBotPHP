@@ -684,6 +684,14 @@ class Telegram
         return @$this->data['message']['caption'];
     }
 
+    public function Photo()
+    {
+        if ($this->getUpdateType() != self::PHOTO) {
+            return [];
+        }
+        return @$this->data['message']['photo'];
+    }
+
     /// Get the chat_id of the current message
 
     /**
@@ -851,8 +859,8 @@ class Telegram
         if ($type == self::EDITED_MESSAGE) {
             return @$this->data['edited_message']['from']['last_name'];
         }
-        if ($type == self::MESSAGE) {
-            return @$this->data['message']['from']['last_name'];
+        if (array_key_exists('last_name', $this->data['message']['from'])) {
+            return $this->data['message']['from']['last_name'];
         }
 
         return '';
