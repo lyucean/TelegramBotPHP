@@ -6,6 +6,10 @@
         {
             "name": "Gabriele Grillo",
             "email": "gabry.grillo@alice.it"
+        },
+        {
+            "name": "Lyucean",
+            "email": "lyucean@gmail.com"
         }
     ],
     "license": "MIT",
@@ -16,6 +20,9 @@
         "ext-curl": "*"
     },
     "autoload": {
-        "files": ["Telegram.php", "TelegramErrorLogger.php"]
+        "files": [
+            "Telegram.php",
+            "TelegramErrorLogger.php"
+        ]
     }
 }

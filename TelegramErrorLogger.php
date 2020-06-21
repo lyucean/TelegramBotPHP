@@ -14,15 +14,16 @@ class TelegramErrorLogger
 
     /**
      * Prints the list of parameters from/to Telegram's API endpoint
-     * \param $result the Telegram's response as array
-     * \param $content the request parameters as array.
+     * @param $result string the Telegram's response as array
+     * @param $content string  the request parameters as array.
+     * @param $use_rt bool
      */
     public static function log($result, $content, $use_rt = true)
     {
         try {
             if ($result['ok'] === false) {
                 self::$self = new self();
-                $e = new \Exception();
+                $e = new Exception();
                 $error = PHP_EOL;
                 $error .= '==========[Response]==========';
                 $error .= "\n";
@@ -41,15 +42,15 @@ class TelegramErrorLogger
                     }
                 } else {
                     foreach ($content as $key => $value) {
-                        $array .= $key.":\t\t".$value."\n";
+                        $array .= $key . ":\t\t" . $value . "\n";
                     }
                 }
                 $backtrace = '============[Trace]===========';
                 $backtrace .= "\n";
                 $backtrace .= $e->getTraceAsString();
-                self::$self->_log_to_file($error.$array.$backtrace);
+                self::$self->_log_to_file($error . $array . $backtrace);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
@@ -58,7 +59,7 @@ class TelegramErrorLogger
 
     /**
      * Write a string in the log file TelegramErrorLogger.txt adding the current server time
-     * \param $error_text the text to append in the log.
+     * @param $error_text string the text to append in the log.
      */
     private function _log_to_file($error_text)
     {
@@ -67,14 +68,14 @@ class TelegramErrorLogger
             if (!is_dir($dir_name)) {
                 mkdir($dir_name);
             }
-            $fileName = $dir_name.'/'.__CLASS__.'-'.date('Y-m-d').'.txt';
+            $fileName = $dir_name . '/' . __CLASS__ . '-' . date('Y-m-d') . '.txt';
             $myFile = fopen($fileName, 'a+');
             $date = '============[Date]============';
             $date .= "\n";
-            $date .= '[ '.date('Y-m-d H:i:s  e').' ] ';
-            fwrite($myFile, $date.$error_text."\n\n");
+            $date .= '[ ' . date('Y-m-d H:i:s  e') . ' ] ';
+            fwrite($myFile, $date . $error_text . "\n\n");
             fclose($myFile);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
