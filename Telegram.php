@@ -692,6 +692,21 @@ class Telegram
         return @$this->data['message']['photo'];
     }
 
+    public function LanguageCode()
+    {
+        if (!array_key_exists('message', $this->data)) {
+            return '';
+        }
+        if (!array_key_exists('from', $this->data['message'])) {
+            return '';
+        }
+
+        if (!array_key_exists('language_code', $this->data['message']['from'])) {
+            return '';
+        }
+        return @$this->data['message']['from']['language_code'];
+    }
+
     /// Get the chat_id of the current message
 
     /**
