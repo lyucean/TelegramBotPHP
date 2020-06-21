@@ -407,7 +407,7 @@ class Telegram
      * link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response.
      * It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
      * @param $file_id String File identifier to get info about
-     * @return string // the JSON Telegram's reply.
+     * @return array // the JSON Telegram's reply.
      */
     public function getFile($file_id)
     {
@@ -675,13 +675,18 @@ class Telegram
         return @$this->data['message']['text'];
     }
 
+    /**
+     * @return string
+     */
     public function Caption()
     {
-        $type = $this->getUpdateType();
-        if ($type == self::CHANNEL_POST) {
-            return @$this->data['channel_post']['caption'];
+        if ($this->getUpdateType() == self::CHANNEL_POST && array_key_exists('caption', $this->data['channel_post'])) {
+            return $this->data['channel_post']['caption'];
         }
-        return @$this->data['message']['caption'];
+        if (array_key_exists('message', $this->data) && array_key_exists('caption', $this->data['message'])) {
+            return $this->data['message']['caption'];
+        }
+        return '';
     }
 
     public function Photo()
@@ -689,7 +694,10 @@ class Telegram
         if ($this->getUpdateType() != self::PHOTO) {
             return [];
         }
-        return @$this->data['message']['photo'];
+        if (!array_key_exists('message', $this->data) || !array_key_exists('photo', $this->data['message'])) {
+            return [];
+        }
+        return $this->data['message']['photo'];
     }
 
     public function LanguageCode()
@@ -1381,7 +1389,7 @@ class Telegram
      * @param $limit Integer Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100
      * @param $timeout Integer Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling
      * @param $update Boolean If true updates the pending message list to the last update received. Default to true.
-     * @return string the updates as Array.
+     * @return array // the updates as Array.
      */
     public function getUpdates($offset = 0, $limit = 100, $timeout = 0, $update = true)
     {
