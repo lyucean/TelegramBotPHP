@@ -407,7 +407,7 @@ class Telegram
      * link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response.
      * It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
      * @param $file_id String File identifier to get info about
-     * @return array // the JSON Telegram's reply.
+     * @return string the JSON Telegram's reply.
      */
     public function getFile($file_id)
     {
@@ -889,21 +889,21 @@ class Telegram
         return '';
     }
 
-    /// Get the username of the user
+    /**
+     * Get the username of the user, if it exists
+     * @return string
+     */
     public function Username()
     {
         $type = $this->getUpdateType();
-        if ($type == self::CALLBACK_QUERY) {
-            return @$this->data['callback_query']['from']['username'];
-        }
-        if ($type == self::CHANNEL_POST) {
-            return @$this->data['channel_post']['from']['username'];
-        }
-        if ($type == self::EDITED_MESSAGE) {
-            return @$this->data['edited_message']['from']['username'];
+
+        if ($type // was able to identify
+            && array_key_exists('from', $this->data[$type])
+            && array_key_exists('username', $this->data[$type]['from'])) {
+            return $this->data[$type]['from']['username'];
         }
 
-        return @$this->data['message']['from']['username'];
+        return '';
     }
 
     /// Get the location in the message
