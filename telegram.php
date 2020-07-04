@@ -686,7 +686,10 @@ class Telegram
         if (array_key_exists('message', $this->data) && array_key_exists('caption', $this->data['message'])) {
             return $this->data['message']['caption'];
         }
-        if (array_key_exists('edited_message', $this->data) && array_key_exists('caption', $this->data['message'])) {
+        if (array_key_exists('edited_message', $this->data) && array_key_exists(
+                'caption',
+                $this->data['edited_message']
+            )) {
             return $this->data['edited_message']['caption'];
         }
         return '';
