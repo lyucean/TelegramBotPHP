@@ -680,17 +680,8 @@ class Telegram
      */
     public function Caption()
     {
-        if ($this->getUpdateType() == self::CHANNEL_POST && array_key_exists('caption', $this->data['channel_post'])) {
-            return $this->data['channel_post']['caption'];
-        }
-        if (array_key_exists('message', $this->data) && array_key_exists('caption', $this->data['message'])) {
-            return $this->data['message']['caption'];
-        }
-        if (array_key_exists('edited_message', $this->data) && array_key_exists(
-                'caption',
-                $this->data['edited_message']
-            )) {
-            return $this->data['edited_message']['caption'];
+        if ($this->getUpdateType() && array_key_exists('caption', $this->data[$this->getUpdateType()])) {
+            return $this->data[$this->getUpdateType()]['caption'];
         }
         return '';
     }
